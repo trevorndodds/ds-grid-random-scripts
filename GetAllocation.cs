@@ -27,7 +27,7 @@ namespace GetAllocation
             }
             else
             {
-                string director = Convert.ToString(1303736681);
+                string director = Convert.ToString(00000000000);
                 Console.WriteLine("No Args found, using default PROD connection");
                 DriverManager.Connect(director);
             }

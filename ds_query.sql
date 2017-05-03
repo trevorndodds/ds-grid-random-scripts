@@ -12,7 +12,7 @@ SELECT b.broker_name
       ,AVG([num_busy_engines]) AS avg_busy_engines
 	  ,(dateadd(hour, datediff(hour, 0, time_stamp), 0)) AS time_stamp_h
   FROM [dbo].[broker_stats]  AS j WITH(NOLOCK) INNER JOIN
-											  dbo.brokers AS b WITH(NOLOCK) ON j.broker_id = b.broker_id
+			dbo.brokers AS b WITH(NOLOCK) ON j.broker_id = b.broker_id
   WHERE    (time_stamp >= dateadd(day,datediff(day,1,GETDATE()),0) AND time_stamp <= dateadd(day,datediff(day,0,GETDATE()),0))
   GROUP BY  (dateadd(hour, datediff(hour, 0, time_stamp), 0)),b.broker_name
 

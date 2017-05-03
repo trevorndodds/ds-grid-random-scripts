@@ -7,6 +7,15 @@ FROM         broker_stats AS bs INNER JOIN
 WHERE     (bs.time_stamp >= @StartDate) AND (bs.time_stamp <= @EndDate)
 GROUP BY bs.time_stamp_h, b.broker_name
 
+--BrokerBusy
+SELECT b.broker_name
+      ,AVG([num_busy_engines]) AS avg_busy_engines
+	  ,(dateadd(hour, datediff(hour, 0, time_stamp), 0)) AS time_stamp_h
+  FROM [dbo].[broker_stats]  AS j WITH(NOLOCK) INNER JOIN
+											  dbo.brokers AS b WITH(NOLOCK) ON j.broker_id = b.broker_id
+  WHERE    (time_stamp >= dateadd(day,datediff(day,1,GETDATE()),0) AND time_stamp <= dateadd(day,datediff(day,0,GETDATE()),0))
+  GROUP BY  (dateadd(hour, datediff(hour, 0, time_stamp), 0)),b.broker_name
+
 --BrokerBusyIdle
 SELECT     bs.time_stamp_h, b.broker_name, AVG(bs.num_busy_engines) AS avg_busy_engines, AVG(bs.num_idle_engines) AS avg_idle_engines
 FROM         broker_stats AS bs INNER JOIN
